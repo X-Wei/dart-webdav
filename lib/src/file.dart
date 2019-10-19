@@ -48,19 +48,19 @@ List<FileInfo> treeFromWevDavXml(String xmlStr) {
   var xmlDocument = xml.parse(xmlStr);
 
   // Iterate over the response to find all folders / files and parse the information
-  xmlDocument.findAllElements("D:response").forEach((response) {
-    var davItemName = response.findElements("D:href").single.text;
+  xmlDocument.findAllElements("d:response").forEach((response) {
+    var davItemName = response.findElements("d:href").single.text;
     response
-        .findElements("D:propstat")
+        .findElements("d:propstat")
         .single
-        .findElements("D:prop")
+        .findElements("d:prop")
         .forEach((element) {
       var contentLength =
-          element.findElements("D:getcontentlength").single.text;
+          element.findElements("d:getcontentlength").single.text;
 
-      var lastModified = element.findElements("D:getlastmodified").single.text;
+      var lastModified = element.findElements("d:getlastmodified").single.text;
 
-      var creationTime = element.findElements("D:creationdate").single.text;
+      var creationTime = element.findElements("d:creationdate").single.text;
 
       // Add the just found file to the tree
       tree.add(new FileInfo(davItemName, contentLength, lastModified,
