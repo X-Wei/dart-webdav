@@ -32,7 +32,7 @@ class FileInfo {
   }
 }
 
-/// get filed [name] from the property node
+/// get field [name] from the property node
 String prop(dynamic prop, String name, [String defaultVal]) {
   if (prop is Map) {
     final val = prop['D:' + name];
