@@ -10,6 +10,9 @@ class WebDavException implements Exception {
   String cause;
 
   WebDavException(this.cause);
+
+  @override
+  String toString() => 'WebDavException: ${this.cause}';
 }
 
 class Client {
