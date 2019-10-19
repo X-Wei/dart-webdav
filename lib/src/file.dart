@@ -24,7 +24,7 @@ class FileInfo {
 
   @override
   String toString() {
-    return 'FileInfo{name: $name, isDirectory: $isDirectory ,path: $path, size: $size, modificationTime: $modificationTime, creationTime: $creationTime, contentType: $contentType}';
+    return 'FileInfo{name: $name, isDirectory: $isDirectory, path: $path, size: $size, modificationTime: $modificationTime, creationTime: $creationTime, contentType: $contentType}';
   }
 }
 
