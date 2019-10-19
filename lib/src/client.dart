@@ -156,33 +156,35 @@ class Client {
   }
 
   /// remove dir with given [path]
-  void rmdir(String path, [bool safe = true]) async {
+  Future<HttpClientResponse> rmdir(String path, [bool safe = true]) async {
     path = path.trim();
     List<int> expectedCodes = [204];
     if (safe) {
       expectedCodes.addAll([204, 404]);
     }
-    await this._send('DELETE', path, expectedCodes);
+    return await this._send('DELETE', path, expectedCodes);
   }
 
   /// remove dir with given [path]
-  void delete(String path) async {
-    await this._send('DELETE', path, [204]);
+  Future<HttpClientResponse> delete(String path) async {
+    return await this._send('DELETE', path, [204]);
   }
 
   /// upload a new file with [localData] as content to [remotePath]
-  void _upload(Uint8List localData, String remotePath) async {
-    await this._send('PUT', remotePath, [200, 201, 204], data: localData);
+  Future<HttpClientResponse> _upload(
+      Uint8List localData, String remotePath) async {
+    return await this
+        ._send('PUT', remotePath, [200, 201, 204], data: localData);
   }
 
   /// upload a new file with [localData] as content to [remotePath]
-  void upload(Uint8List data, String remotePath) async {
-    this._upload(data, remotePath);
+  Future<HttpClientResponse> upload(Uint8List data, String remotePath) async {
+    return this._upload(data, remotePath);
   }
 
   /// upload local file [path] to [remotePath]
-  void uploadFile(String path, String remotePath) async {
-    this._upload(await File(path).readAsBytes(), remotePath);
+  Future<HttpClientResponse> uploadFile(String path, String remotePath) async {
+    return this._upload(await File(path).readAsBytes(), remotePath);
   }
 
   /// download [remotePath] to local file [localFilePath]
