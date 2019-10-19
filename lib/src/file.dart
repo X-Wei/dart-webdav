@@ -13,15 +13,11 @@ class FileInfo {
   // Returns the decoded name of the file / folder without the whole path
   String get name {
     if (this.isDirectory) {
-      return Uri.decodeFull(this.path
-          .substring(0, this.path.lastIndexOf("/"))
-          .split("/")
-          .last);
+      return Uri.decodeFull(
+          this.path.substring(0, this.path.lastIndexOf("/")).split("/").last);
     }
 
-    return Uri.decodeFull(this.path
-        .split("/")
-        .last);
+    return Uri.decodeFull(this.path.split("/").last);
   }
 
   bool get isDirectory => this.path.endsWith("/");
@@ -60,20 +56,11 @@ List<FileInfo> treeFromWevDavXml(String xmlStr) {
         .findElements("D:prop")
         .forEach((element) {
       var contentLength =
-          element
-              .findElements("D:getcontentlength")
-              .single
-              .text;
+          element.findElements("D:getcontentlength").single.text;
 
-      var lastModified = element
-          .findElements("D:getlastmodified")
-          .single
-          .text;
+      var lastModified = element.findElements("D:getlastmodified").single.text;
 
-      var creationTime = element
-          .findElements("D:creationdate")
-          .single
-          .text;
+      var creationTime = element.findElements("D:creationdate").single.text;
 
       // Add the just found file to the tree
       tree.add(new FileInfo(davItemName, contentLength, lastModified,
