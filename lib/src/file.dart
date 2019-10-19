@@ -42,29 +42,37 @@ String prop(dynamic prop, String name, [String defaultVal]) {
 
 List<FileInfo> treeFromWevDavXml(String xmlStr) {
   // Initialize a list to store the FileInfo Objects
-  var tree = new List<FileInfo>();
+  final tree = List<FileInfo>();
 
   // parse the xml using the xml.parse method
-  var xmlDocument = xml.parse(xmlStr);
+  final xmlDocument = xml.parse(xmlStr);
+
+  String _getElementWithDefault(
+      xml.XmlElement element, String name, String defaultVal) {
+    final iterable = element.findAllElements(name);
+    return iterable.isEmpty ? defaultVal : iterable.single.text;
+  }
 
   // Iterate over the response to find all folders / files and parse the information
   xmlDocument.findAllElements("d:response").forEach((response) {
-    var davItemName = response.findElements("d:href").single.text;
+    final davItemName = response.findElements("d:href").single.text;
     response
         .findElements("d:propstat")
         .single
         .findElements("d:prop")
         .forEach((element) {
-      var contentLength =
-          element.findElements("d:getcontentlength").single.text;
+      final contentLength =
+          _getElementWithDefault(element, 'd:getcontentlength', '???');
 
-      var lastModified = element.findElements("d:getlastmodified").single.text;
+      final lastModified =
+          _getElementWithDefault(element, 'd:getlastmodified', '???');
 
-      var creationTime = element.findElements("d:creationdate").single.text;
+      final creationTime = DateTime.parse(
+          _getElementWithDefault(element, 'd:creationdate', '1970-01-01'));
 
       // Add the just found file to the tree
-      tree.add(new FileInfo(davItemName, contentLength, lastModified,
-          DateTime.parse(creationTime), ""));
+      tree.add(
+          FileInfo(davItemName, contentLength, lastModified, creationTime, ""));
     });
   });
 
