@@ -86,10 +86,14 @@ class Client {
       String method, String path, List<int> expectedCodes,
       {Uint8List data, Map headers}) async {
     return await retry(
-        () => this
-            .__send(method, path, expectedCodes, data: data, headers: headers),
-        retryIf: (e) => e is WebDavException,
-        maxAttempts: 5);
+      () => this
+          .__send(method, path, expectedCodes, data: data, headers: headers),
+      retryIf: (e) {
+        print(e);
+        return e is WebDavException;
+      },
+      maxAttempts: 5,
+    );
   }
 
   /// send the request with given [method] and [path]
