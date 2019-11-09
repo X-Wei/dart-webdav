@@ -135,7 +135,7 @@ class Client {
   }
 
   /// just like mkdir -p
-  void mkdirs(String path) async {
+  Future<void> mkdirs(String path) async {
     path = path.trim();
     List<String> dirs = path.split("/");
     dirs.removeWhere((value) => value == null || value == '');
@@ -192,9 +192,11 @@ class Client {
   }
 
   /// download [remotePath] to local file [localFilePath]
-  void download(String remotePath, String localFilePath) async {
+  Future<HttpClientResponse> download(
+      String remotePath, String localFilePath) async {
     HttpClientResponse response = await this._send('GET', remotePath, [200]);
     await response.pipe(new File(localFilePath).openWrite());
+    return response;
   }
 
   /// download [remotePath] and store the response file contents to String
